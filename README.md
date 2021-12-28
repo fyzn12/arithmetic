@@ -357,7 +357,93 @@ v[j 1 ]*w[j 1 ]+v[j 2 ]*w[j 2 ]+ … +v[j k ]*w[j k ] 。（其中 * 为乘号�
 | 3 | 0 | 1 | 2 | 2 |  |  |  |  |    
   
 > 当苹果数与盘子数相等时，首先会考虑相对
-apple1.png
+
+
+
+
+# 数组  
+   
+## 数组划分  
+  
+#### 题目描述  
+  
+> 输入int型数组，询问该数组能否分成两组，使得两组中各元素加起来的和相等，并且，所有5的倍数必须在其中一个组中，所有3的倍数在另一个组中（不包括5的倍数），
+不是5的倍数也不是3的倍数能放在任意一组，可以将数组分为空数组，能满足以上条件，输出true；不满足时输出false。  
+>   
+#### 分析  
+  
+> ==> 原数组arr 需要转化为arr3 和 arr5  
+> ==> 假定原数组的和为sum  arr3 和为 sum3 ，arr5 和为 sum5 ，既不是5又不是3的倍数定义为数组arrO    
+> ==> 满足条件时  sum3 = sum5    
+> ==> sum = sum3 + sum5    
+> ==> sum = 2 * sum3 或 sum = 2 * sum5    
+> ==> sum3 = sum5 = sum / 2    
+> ==> 转化为 int target = sum/2 - sum3 或者 int target = sum/2 - sum5    
+> ==> 当 target为0时满足条件   
+> ==> target 的值是arrO中某一个或者几个值的和值  
+> ==> 因此该问题转化为 给定一个数组和一个目标数，求该数组中满足某一个或者几个值相加和值为目标数的问题   
+> ==> 考虑到使用深度优先遍历搜索算法 DFS  
+>   
+>   
+#### 实现  
+  
+```java   
+   public static void main(String[] args) throws Exception {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        String str;
+        while ((str = bf.readLine()) != null) {
+            int n = Integer.parseInt(str);
+            int sum = 0, sum5 = 0;
+            List<Integer> other = new LinkedList<>();
+            // 标记是否被占用
+            Map<Integer, Boolean> check = new HashMap<>();
+            String[] arrs = bf.readLine().split(" ");
+            int count = 0;
+            for (int i = 0; i < n; i++) {
+                Integer num = Integer.parseInt(arrs[i]);
+                sum += num;
+                if (num % 5 == 0 && num != 0) {
+                    sum5 += num;
+                } else if (num % 3 != 0) {
+                    // other 部分数据
+                    other.add(num);
+                    check.put(count++, false);
+                }
+            }
+            if ((sum & 1) != 0) {
+                System.out.println(false);
+            } else {
+                int target = sum / 2 - sum5;
+                if (target == 0) {
+                    System.out.println(true);
+                } else {
+                    System.out.println(dfs(other, check, target, 0));
+                }
+            }
+        }
+    }
+
+    public static Boolean dfs(List<Integer> list, Map<Integer, Boolean> check, int target, int index) {
+        // 递归终止条件
+        if (target == 0 || index == list.size()) {
+            return target == 0 ;
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (!check.get(i)) {
+                // 将该数占用
+                check.put(i, true);
+                if (dfs(list, check, target - list.get(i), index + 1)) {
+                    return true;
+                }
+                // 走完一次流程，发现没有找到满足条件的值 回溯到下一个节点开始下一轮查找，释放本次占用
+                check.put(i, false);
+            }
+        }
+        // 回溯的依据
+        return false;
+    }
+     
+```
 
   
 

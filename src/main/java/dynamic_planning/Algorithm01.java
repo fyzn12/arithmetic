@@ -137,16 +137,6 @@ public class Algorithm01 {
             return t;
         }
 
-        @Override
-        public String toString() {
-            return "Goods{" +
-                    "id=" + id +
-                    ", price=" + price +
-                    ", importance=" + importance +
-                    ", substandardGoods=" + substandardGoods +
-                    ", t=" + t +
-                    '}';
-        }
     }
 
 
