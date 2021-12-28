@@ -1,5 +1,6 @@
 package array;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,42 +32,90 @@ public class TargetSearch {
      * @DateTime: 2021/12/28 16:42
      */
     public static void main(String[] args) {
-        int[] t = new int[]{2,17,7,15};
-        Map<Integer,Boolean> map = new HashMap<>();
-        map.put(0,false);
-        map.put(1,false);
-        map.put(2,false);
-        map.put(3,false);
-        dfs(t, map, 9, 0);
-        for (int i = 0;i<2;i++){
-            System.out.println(re[i]);
+        int[] t = new int[]{2, 7,3,3, 17, 15};
+
+//        Map<Integer, Boolean> map = new HashMap<>();
+//        map.put(0, false);
+//        map.put(1, false);
+//        map.put(2, false);
+//        map.put(3, false);
+//        dfs(t, map, 9, 0);
+//        for (int i = 0; i < 2; i++) {
+//            System.out.println(re[i]);
+//        }
+        int[] ints = hashMethod(t, 5);
+
+        for (int i = 0; i < ints.length; i++) {
+            System.out.println(ints[i]);
         }
+
+
     }
+
     static int[] re = new int[2];
+
     /**
      * <p>
-     *   查找  方法1深度优先搜索
+     * 查找  方法1深度优先搜索
      * </P>
      */
-    public static Boolean dfs(int[] arr, Map<Integer,Boolean> map, int target, int index) {
+    public static Boolean dfs(int[] arr, Map<Integer, Boolean> map, int target, int index) {
 
-        if (target == 0 || index == arr.length){
-            if (target == 0 && 0 == re[1]){
-                re[1] = index ;
+        if (target == 0 || index == arr.length) {
+            if (target == 0 && 0 == re[1]) {
+                re[1] = index;
             }
             return target == 0;
         }
         for (int i = index; i < arr.length; i++) {
 //            if (!map.get(i)){
 //                map.put(i,true);
-                if (dfs(arr , map, target - arr[i] ,index+1) ){
-                    re[0] = i;
-                    return true;
-                }
+            if (dfs(arr, map, target - arr[i], index + 1)) {
+                re[0] = i;
+                return true;
+            }
 //                map.put(i,false);
 //            }
         }
         return false;
+    }
+
+
+    /**
+     * 方法2 利用hash索引
+     *
+    * @param arr 代求数组
+    * @param target 目标数
+    * */
+    public static int[] hashMethod(int[] arr,int target){
+        int[] result = new int[2];
+        Map<Integer, Object> tmp = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            int num = arr[i];
+            if (tmp.containsKey(num)) {
+                Object o = tmp.get(num);
+                String str = o + "," + i;
+                tmp.put(num, str);
+            } else {
+                tmp.put(num, i);
+            }
+        }
+        loop:for (int i = 0; i < arr.length; i++) {
+            int num = arr[i];
+            int c = target - num;
+            if (tmp.containsKey(c)){
+                result[0] = i;
+                String str = String.valueOf(tmp.get(c));
+                String[] strings = str.split(",");
+                for (String s : strings){
+                    if (i != Integer.parseInt(s)){
+                        result[1] = Integer.parseInt(s);
+                        break loop;
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
 
