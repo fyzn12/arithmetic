@@ -48,20 +48,20 @@ public class Labyrinth {
                 String[] cos = str.split(" ");
                 target[i] = cos;
             }
-            dfs(target, 0, 0);
+            Map<String, List<Integer>> result = new LinkedHashMap<>();
+
+            dfs(target, 0, 0,result);
             for (Map.Entry<String, List<Integer>> map : result.entrySet()){
                 List<Integer> value = map.getValue();
                 System.out.println("(" + value.get(0)+","+value.get(1)+")");
             }
-            System.out.println(check);
         }
     }
 
-    private static Map<String, List<Integer>> result = new LinkedHashMap<>();
-    private static Map<String, List<Integer>> resultT = new LinkedHashMap<>();
+
 
     static Boolean check = false;
-    public static void dfs(String[][] target, int i, int j) {
+    public static void dfs(String[][] target, int i, int j,Map<String, List<Integer>> result) {
         List<Integer> t = new LinkedList<>();
         t.add(i);
         t.add(j);
@@ -74,21 +74,26 @@ public class Labyrinth {
         }
         // 将当前值占用
         target[i][j] = "1";
-        // 向上走是否能走
-        if (i - 1 >= 0 && target[i - 1][j].equals("0")) {
-            dfs(target, i - 1, j);
-        }
+
         // 向下走
         if (i + 1 < target.length && target[i + 1][j].equals("0")) {
-            dfs(target, i + 1, j);
+            dfs(target, i + 1, j,result);
+            if (check)return;
+        }
+        // 向上走是否能走
+        if (i - 1 >= 0 && target[i - 1][j].equals("0") ) {
+            dfs(target, i - 1, j,result);
+            if (check)return;
         }
         // 向左走
         if (j - 1 >= 0 && target[i][j - 1].equals("0")) {
-            dfs(target, i, j - 1);
+            dfs(target, i, j - 1,result);
+            if (check)return;
         }
         // 向右走
         if (j + 1 < target[0].length && target[i][j + 1].equals("0")) {
-            dfs(target, i, j + 1);
+            dfs(target, i, j + 1,result);
+            if (check)return;
         }
         // 释放占用值
         target[i][j] = "0";
@@ -96,12 +101,12 @@ public class Labyrinth {
         result.remove(i + "-" + j);
     }
 
-    public static void initResult(int i ,int j){
-        List<Integer> t = new LinkedList<>();
-        t.add(i);
-        t.add(j);
-        // 记录当前位置
-        result.put(i + "-" + j, t);
-    }
+//    public static void initResult(int i ,int j,){
+//        List<Integer> t = new LinkedList<>();
+//        t.add(i);
+//        t.add(j);
+//        // 记录当前位置
+//        result.put(i + "-" + j, t);
+//    }
 
 }
