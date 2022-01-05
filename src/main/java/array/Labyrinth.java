@@ -2,6 +2,7 @@ package array;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -99,6 +100,7 @@ public class Labyrinth {
         target[i][j] = "0";
         // 去除本次记录的位置
         result.remove(i + "-" + j);
+        new BigDecimal(8).setScale(1,BigDecimal.ROUND_HALF_UP);
     }
 
 //    public static void initResult(int i ,int j,){
