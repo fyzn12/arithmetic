@@ -83,15 +83,43 @@ public class AlgorithmPutApple {
 
 
     public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String str = " ";
-        while((str = br.readLine()) != null){
-            if (str.equals(""))break;
-            String[] s = str.split(" ");
-            int m = Integer.parseInt(s[0]);
-            int n = Integer.parseInt(s[1]);
-            System.out.println(count(m,n));
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        String str = " ";
+//        while((str = br.readLine()) != null){
+//            if (str.equals(""))break;
+//            String[] s = str.split(" ");
+//            int m = Integer.parseInt(s[0]);
+//            int n = Integer.parseInt(s[1]);
+//            System.out.println(count(m,n));
+//        }
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        String str;
+        while((str = bf.readLine()) != null){
+            String[] arr = str.split(" ");
+            // 苹果数
+            int n = Integer.parseInt(arr[0]);
+            // 盘子数
+            int m = Integer.parseInt(arr[1]);
+            m = Math.min(n, m);
+            int[][] dp = new int[m+1][n+1];
+            for (int i = 0;i <= m;i++) {
+                dp[i][0] = 0;
+                dp[i][1] = 1;
+            }
+            for (int i = 0;i <= n;i++) {
+                dp[0][i] = 0;
+                if (i != 0) dp[1][i] = 1;
+            }
+            for (int i = 2;i<=m;i++){
+                for (int j = 2;j<= n;j++){
+                    if (j>=i)
+                        dp[i][j] = dp[i-1][j] + dp[i][j - i];
+                    else dp[i][j] = dp[i-1][j];
+                }
+            }
+            System.out.println(dp[m][n]);
         }
+
     }
     public static int count(int m,int n){
         if(n == 1 || m == 0)return 1;
