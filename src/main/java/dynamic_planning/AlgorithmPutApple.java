@@ -31,99 +31,36 @@ public class AlgorithmPutApple {
      * 8
      * </p>
      */
+    public static void main(String[] args) throws Exception {
 
-
-//    public static void main(String[] args) throws Exception {
-//        List<Map<String, Integer>> list = new LinkedList<>();
-//        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-//        String str=" ";
-//        while((str = bf.readLine()) != null){
-//            if (str.equals(" "))break;
-//            // 苹果数
-//            String[] s = str.split(" ");
-//            int m = Integer.parseInt(s[0]);
-//            // 盘子数
-//            int n = Integer.parseInt(s[1]);
-//            Map<String, Integer> map = new HashMap<>();
-//            map.put("m", m);
-//            map.put("n", n);
-//            list.add(map);
-//        }
-//        List<Integer> result = new LinkedList<>();
-//        for(Map<String,Integer> map: list){
-//            int m = map.get("m");
-//            int n = map.get("n");
-//            if (m == 0 || m == 1) {
-//                result.add(m);
-//                continue;
-//            }
-//            if (n == 1) {
-//                result.add(n);
-//                continue;
-//            }
-//            int[][] dp = new int[n + 1][m + 1];
-//            for (int i = 1; i <= n; i++) {
-//                dp[i][0] = 0;
-//                dp[i][1] = 1;
-//            }
-//            for (int i = 2; i <= m; i++) dp[1][i] = 1;
-//            for (int i = 2; i <= n; i++) {
-//                for (int j = 2; j < m + 1; j++) {
-//                    if (j == 2) {
-//                        dp[i][j] = 2;
-//                        continue;
-//                    }
-//                    dp[i][j] = dp[i - 1][j] + ((j - i) < 0 ? 0 : dp[i][j - i]);
-//                }
-//            }
-//            result.add(dp[n][m]);
-//        }
-//        result.forEach(System.out::println);
-//    }
-
-
-    public static void main(String[] args) throws Exception{
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        String str = " ";
-//        while((str = br.readLine()) != null){
-//            if (str.equals(""))break;
-//            String[] s = str.split(" ");
-//            int m = Integer.parseInt(s[0]);
-//            int n = Integer.parseInt(s[1]);
-//            System.out.println(count(m,n));
-//        }
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         String str;
-        while((str = bf.readLine()) != null){
+        while ((str = bf.readLine()) != null) {
             String[] arr = str.split(" ");
             // 苹果数
             int n = Integer.parseInt(arr[0]);
             // 盘子数
             int m = Integer.parseInt(arr[1]);
             m = Math.min(n, m);
-            int[][] dp = new int[m+1][n+1];
-            for (int i = 0;i <= m;i++) {
-                dp[i][0] = 0;
+            int[][] dp = new int[m + 1][n + 1];
+            dp[0][0] = 0;
+            for (int i = 1; i <= m; i++) {
+                dp[i][0] = 1;
                 dp[i][1] = 1;
             }
-            for (int i = 0;i <= n;i++) {
+            for (int i = 0; i <= n; i++) {
                 dp[0][i] = 0;
                 if (i != 0) dp[1][i] = 1;
             }
-            for (int i = 2;i<=m;i++){
-                for (int j = 2;j<= n;j++){
-                    if (j>=i)
-                        dp[i][j] = dp[i-1][j] + dp[i][j - i];
-                    else dp[i][j] = dp[i-1][j];
+
+            for (int i = 2; i <= m; i++) {
+                for (int j = 2; j <= n; j++) {
+                    dp[i][j] = dp[i - 1][j] + ((j - i) < 0 ? 0 : dp[i][j - i]);
                 }
             }
+
             System.out.println(dp[m][n]);
         }
 
-    }
-    public static int count(int m,int n){
-        if(n == 1 || m == 0)return 1;
-        else if(n > m)return count(m,m);
-        else return count(m,n - 1) + count(m - n,n);
     }
 }
