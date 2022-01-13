@@ -1,33 +1,9 @@
-package tree;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-/**
- * @author zhang.rongjun
- * @version 1.0
- * @date 2022/1/6 17:35
- * @description
- */
-public class Tree {
-    static class TreeNode{
-        int val;
-        TreeNode right;
-        TreeNode left;
-    }
-
-    private static List<String> binTreePath1(TreeNode root) {
-        LinkedList<String> l = new LinkedList<String>();
-        //如果为空，返回空
-        if(root==null)return l;
-        getPath(root,l,root.val+"");
-        return l;
-    }
-
-
-    /** 二叉树的路径遍历 */
+# 二叉树的路径遍历  
+  
+> 输出二叉树的路径  
+  
+```java
+ /** 二叉树的路径遍历 */
     private static void getPath(TreeNode root, List<String> re, String s) {
         //此时为叶节点，把s添加到结果列表中，返回
         if(root.left==null && root.right==null) {
@@ -71,28 +47,7 @@ public class Tree {
         }
         return l;
     }
-
-    public boolean hasPathSum(TreeNode root, int targetSum) {
-        Queue<String> pathSum = new LinkedList<String>();
-        Queue<TreeNode> nodeQue = new LinkedList<>();
-        nodeQue.add(root);
-        pathSum.add("");
-        while(!nodeQue.isEmpty()){
-            TreeNode node = nodeQue.poll();
-            String curPathSum = pathSum.poll();
-            curPathSum += node.val;
-            if(node.left == null && node.right == null){
-                System.out.println(curPathSum);
-                // if(curPathSum == targetSum)return true;
-            }
-            if(node.left != null){
-                nodeQue.add(node.left);
-            }
-            if(node.right != null)nodeQue.add(node.right);
-            pathSum.add(curPathSum +"->");
-        }
-        return false;
-    }
+```  
 
 
-}
+> 给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。如果存在，返回 true ；否则，返回 false 。
