@@ -12,6 +12,45 @@ public class MaxRoudStr {
         System.out.println(longestPalindrome("cdabbacc"));
     }
 
+
+    /**
+     *   <p>
+     *       回文准备：
+     *          将字符串的空格以#填充
+     *          ①：初始话maxRight和center为0
+     *          ②：记录maxLen 记录回文过程中的最大回文字串，初始值为1
+     *          ③：如何要求输出回文字串需要定义一个start为0
+     *        过程分析：
+     *          ①：当 i < maxRight时 此时的i必然在center的右侧
+     *               需要求出以center 为中心，长度为i-center的左坐标
+     *               ==> center - (i - center) = mirror
+     *               ==> mirror = 2center - i
+     *               此时的p[mirror] 就是之前已经回文过填充的值
+     *               此时要考虑p[i]的值就是从 i 到maxRight之间的跳跃数和p[mirror]之间的最小值
+     *               ==> p[i] = Math.min(maxRight-i,p[mirror])
+     *           ②：定义下一次尝试扩散的起点：
+     *               int left = i - (1 + p[i]);
+     *               int right = i + (1 + p[i]);
+     *           ③：进行回文扩散：
+     *               while(left >= 0 && right < 字符串长度 && string.charAt(left) == string.charAt(right)){
+     *                   p[i]++;
+     *                   left--;
+     *                   right++;
+     *               }
+     *            ④：更新maxRight和center
+     *               当 i + p[i] > maxRight 时
+     *                  maxRight = i + p[i]
+     *                  center = i;
+     *             ⑤：判断最长回文字串
+     *                当p[i](就是在i节点的时候可以跳跃的步数即回文数) > maxLen时
+     *                   maxLen = p[i];
+     *                   start = ( i - maxLen) / 2;最大长度的起始坐标
+     *
+     *   </P>
+     * @param:
+     * @author:  zhang.rongjun
+     * @DateTime: 2022/1/13 9:47
+     * */
     public static String longestPalindrome(String s) {
         // 特判
         int len = s.length();
