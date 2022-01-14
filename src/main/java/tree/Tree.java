@@ -1,9 +1,7 @@
 package tree;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author zhang.rongjun
@@ -69,29 +67,84 @@ public class Tree {
                 queueStrPath.add(curPath+curNode.val+"->");
             }
         }
+
         return l;
     }
 
+
     public boolean hasPathSum(TreeNode root, int targetSum) {
-        Queue<String> pathSum = new LinkedList<String>();
+        Queue<Integer> pathSum = new LinkedList<>();
         Queue<TreeNode> nodeQue = new LinkedList<>();
         nodeQue.add(root);
-        pathSum.add("");
+        pathSum.add(0);
         while(!nodeQue.isEmpty()){
             TreeNode node = nodeQue.poll();
-            String curPathSum = pathSum.poll();
+            Integer curPathSum = pathSum.poll();
             curPathSum += node.val;
             if(node.left == null && node.right == null){
-                System.out.println(curPathSum);
-                // if(curPathSum == targetSum)return true;
+                if(curPathSum == targetSum)return true;
             }
             if(node.left != null){
                 nodeQue.add(node.left);
+                pathSum.add(curPathSum);
             }
-            if(node.right != null)nodeQue.add(node.right);
-            pathSum.add(curPathSum +"->");
+            if(node.right != null) {
+                nodeQue.add(node.right);
+                pathSum.add(curPathSum);
+            }
         }
         return false;
+    }
+
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> result = new LinkedList<>();
+        if (null == root)return result;
+        Queue<Integer> pathSum = new LinkedList<Integer>();
+        Queue<String> path = new LinkedList<>();
+        Queue<TreeNode> nodeQue = new LinkedList<>();
+        nodeQue.add(root);
+        pathSum.add(0);
+        while(!nodeQue.isEmpty()){
+            TreeNode node = nodeQue.poll();
+            Integer curPathSum = pathSum.poll();
+            String curPath = path.poll();
+            curPathSum += node.val;
+            curPath += node.val;
+            if(node.left == null && node.right == null){
+                if(curPathSum == targetSum){
+                    String[] arr = curPath.split("->");
+                    List<Integer> list = Arrays.stream(arr).map(Integer::parseInt).collect(Collectors.toList());
+                    result.add(list);
+                }
+            }
+            if(node.left != null){
+                nodeQue.add(node.left);
+                pathSum.add(curPathSum);
+                path.add(curPath +"->");
+            }
+            if(node.right != null) {
+                nodeQue.add(node.right);
+                pathSum.add(curPathSum);
+                path.add(curPath +"->");
+            }
+
+        }
+        return result;
+    }
+
+
+    int max = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        return dfs(root);
+    }
+
+    private int dfs(TreeNode root){
+        if(root == null)return 0;
+        int maxLeft = Math.max(dfs(root.left),0);
+        int maxRight = Math.max(dfs(root.right),0);
+        int curMax = Math.max(maxLeft + root.val,maxRight+root.val);
+        max = Math.max(max,curMax) + root.val;
+        return max;
     }
 
 

@@ -1,8 +1,11 @@
 package test;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author ZhangRongJun
@@ -56,46 +59,10 @@ public class TestMain {
      */
     public static void main(String[] args) throws Exception {
 
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        String str;
-//        while ((str = br.readLine()) != null) {
-            String str = "5 2 3 2 4 3 5 2 1 4 3";
-            String[] arr = str.split(" ");
-            int n = Integer.parseInt(arr[0]);
-            int head = Integer.parseInt(arr[1]);
-            Map<Integer, Integer> map = new LinkedHashMap<>();
-            map.put(head, null);
-            int delete = Integer.parseInt(arr[arr.length - 1]);
-            // 6 2 1 2 3 2 5 1 4 5 7 2 2
-            for (int i = 2; i < arr.length - 1; i += 2) {
-                int v1 = Integer.parseInt(arr[i]);
-                int v2 = Integer.parseInt(arr[i + 1]);
-                if (map.containsKey(v2)) {
-                    if (map.get(v2) != null) {
-                        int next = map.get(v2);
-                        map.put(v1, next);
-                    }
-                }
-                map.put(v2, v1);
-            }
-
-            int key = head;
-            StringBuilder builder = new StringBuilder();
-            while (!map.isEmpty()) {
-                if (delete != key) {
-                    builder.append(key).append(" ");
-                }
-                if (map.containsKey(key)) {
-                    int tmp = key;
-                    key = map.get(key);
-                    map.remove(tmp);
-                    // 避免最后一个不被丢弃
-                    if (map.isEmpty() && delete != key) {
-                        builder.append(key).append(" ");
-                    }
-                }
-            }
-            System.out.println(builder.toString().trim());
+                   String str = "1->2->3";
+                   String[] arr = str.split("->");
+                   List<Integer> list = Arrays.stream(arr).map(Integer::parseInt).collect(Collectors.toList());
+        System.out.println(list);
 //        }
 
 //        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
