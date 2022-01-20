@@ -10,10 +10,38 @@ import java.util.stream.Collectors;
  * @description
  */
 public class Tree {
-    static class TreeNode{
+    private static class TreeNode{
         int val;
         TreeNode right;
         TreeNode left;
+
+        public TreeNode(int val) {
+            this.val = val;
+        }
+
+        public int getVal() {
+            return val;
+        }
+
+        public void setVal(int val) {
+            this.val = val;
+        }
+
+        public TreeNode getRight() {
+            return right;
+        }
+
+        public void setRight(TreeNode right) {
+            this.right = right;
+        }
+
+        public TreeNode getLeft() {
+            return left;
+        }
+
+        public void setLeft(TreeNode left) {
+            this.left = left;
+        }
     }
 
     private static List<String> binTreePath1(TreeNode root) {
@@ -146,6 +174,29 @@ public class Tree {
         max = Math.max(max,curMax) + root.val;
         return max;
     }
+
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        TreeNode left = new TreeNode(2);
+        TreeNode left2 = new TreeNode(0);
+        TreeNode left3 = new TreeNode(0);
+
+    }
+
+    public TreeNode rdeserialize(List<String> dataList) {
+        if (dataList.get(0).equals("None")) {
+            dataList.remove(0);
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(dataList.get(0)));
+        dataList.remove(0);
+        root.left = rdeserialize(dataList);
+        root.right = rdeserialize(dataList);
+
+        return root;
+    }
+
 
 
 }
